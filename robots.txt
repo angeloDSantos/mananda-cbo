@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://angelodsantos.github.io/mananda-cbo/sitemap.xml
