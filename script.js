@@ -15,19 +15,34 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // Mobile menu toggle
+  // Mobile menu toggle (with backdrop, scroll-lock, Escape + outside-tap close)
   var toggle = document.getElementById("navToggle");
   var links = document.querySelector(".nav__links");
   if (toggle && links) {
-    toggle.addEventListener("click", function () {
-      var open = links.classList.toggle("is-open");
+    var backdrop = document.createElement("div");
+    backdrop.className = "nav-backdrop";
+    document.body.appendChild(backdrop);
+
+    function setMenu(open) {
+      links.classList.toggle("is-open", open);
+      backdrop.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+
+    toggle.addEventListener("click", function () {
+      setMenu(!links.classList.contains("is-open"));
     });
+    backdrop.addEventListener("click", function () { setMenu(false); });
     links.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        links.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
+      a.addEventListener("click", function () { setMenu(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setMenu(false);
+    });
+    // If the viewport grows back to desktop, make sure the menu is reset.
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 860) setMenu(false);
     });
   }
 
