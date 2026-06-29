@@ -49,18 +49,6 @@
     });
   });
 
-  // Video placeholder fallback
-  document.querySelectorAll(".js-video").forEach(function (video) {
-    video.addEventListener("error", function () { video.style.display = "none"; });
-    var src = video.querySelector("source");
-    if (src) {
-      // Probe the source; if it 404s, hide the video element.
-      fetch(src.src, { method: "HEAD" })
-        .then(function (r) { if (!r.ok) video.style.display = "none"; })
-        .catch(function () { video.style.display = "none"; });
-    }
-  });
-
   // Contact form: POST to a form service if configured, else fall back to
   // the visitor's email app via a mailto: link. Either way it does something.
   var form = document.getElementById("contactForm");
@@ -110,7 +98,7 @@
 
   // Scroll reveal
   var revealTargets = document.querySelectorAll(
-    ".section__title, .lead, .photo-card, .stat, .card, .gallery__item, .involved__card, .contact__form, .problem__story p"
+    ".section__title, .lead, .photo, .pillar, .card, .gallery__item, .involved__card, .contact__form"
   );
   revealTargets.forEach(function (el) { el.classList.add("reveal"); });
 
